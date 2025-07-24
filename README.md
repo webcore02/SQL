@@ -10,9 +10,11 @@ RETURNS VARCHAR(100)
 AS
 BEGIN
     DECLARE @days INT, @hours INT, @minutes INT, @secs INT;
+    
     SET @days = @seconds / 86400;
     SET @hours = (@seconds % 86400) / 3600;
-    SET @minutes = (@seconds % 3600) / 60;
+    SET @minutes = (@seconds % 3600) % 3600 / 60; -- можно упростить
+    SET @minutes = (@seconds % 3600) / 60; -- корректнее
     SET @secs = @seconds % 60;
     
     RETURN CAST(@days AS VARCHAR) + ' days ' +
@@ -21,7 +23,7 @@ BEGIN
            CAST(@secs AS VARCHAR) + ' seconds';
 END;
 
-SELECT dbo.format_seconds(123456);
+SELECT dbo.format_seconds(123456); 
 ```
 
 2. Выведите только чётные числа от 1 до 10.
